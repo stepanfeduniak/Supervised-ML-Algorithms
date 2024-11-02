@@ -1,17 +1,18 @@
 import numpy as np
 import pandas as pd
 class PolynomialRegressor:
-    polynomial_degree=1
-    def __init__(self,polynomial_degree):
-        self.polynomial_degree=polynomial_degree
+    def __init__(self,polynomial_degree: int=1):
+        self.polynomial_degree = polynomial_degree
+        self.coefficient_vector = None
+    
+    def vandermonde(self, x: np.ndarray):
+        vandermonde_matrix=np.zeros((len(x), self.polynomial_degree + 1))
+        for i in range(self.polynomial_degree + 1):
+            vandermonde_matrix[:, i] = x ** i
+        return vandermonde_matrix
     
     def train_model(self, data, prediction):
-        data_array = data
-        prediction_data_array = prediction
-        #Creating an Vandermonde matrix
-        design_matrix_X=np.zeros((len(data), self.polynomial_degree + 1))
-        for i in range(self.polynomial_degree + 1):
-            design_matrix_X[:, i] = data_array ** i
+        design_matrix_X=self.vandermonde(data)
         print(design_matrix_X)
         m1=design_matrix_X.T@design_matrix_X
         b1=design_matrix_X.T@prediction
